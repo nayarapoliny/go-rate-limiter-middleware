@@ -30,17 +30,18 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/v1/data", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]string{
-			"status":  "success",
-			"message": "Requisição processada dentro do limite de taxa (Token Bucket)!",
-			"time":    time.Now().UTC().Format(time.RFC3339),
+		encoder := json.NewEncoder(w)
+		encoder.SetIndent("", "  ")
+		_ = encoder.Encode(map[string]interface{}{
+			"status":    "success",
+			"message":   "Requisição processada dentro do limite de taxa (Token Bucket)!",
+			"timestamp": time.Now().UTC().Format(time.RFC3339),
+			"telemetry": ratelimiter.CollectTelemetry(),
 		})
 	})
 
 	protectedHandler := ratelimiter.Middleware(limiter, mux)
 
-	fmt.Printf("🛡️ Servidor Go Rate Limiter Middleware ativo em http://localhost:%s/api/v1/data\n", port)
-	fmt.Println("   • Limite por IP: Burst de 5 reqs (recarga de 2 req/s)")
-	fmt.Println("   • Limite por X-API-Key: Burst de 20 reqs (recarga de 10 req/s)")
+	fmt.Printf("🛡️ Servidor Go Rate Limiter + Telemetria ativo em http://localhost:%s/api/v1/data\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, protectedHandler))
 }

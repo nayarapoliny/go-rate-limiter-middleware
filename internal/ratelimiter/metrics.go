@@ -10,18 +10,18 @@ import (
 )
 
 type SystemTelemetry struct {
-	Uptime            string     `json:"uptime"`
-	CPU               CPUMetrics `json:"cpu"`
-	GoProcessMemory   GoMemory   `json:"go_process_memory"`
-	HostSystemRAM     HostRAM    `json:"host_system_ram"`
+	Uptime          string     `json:"uptime"`
+	CPU             CPUMetrics `json:"cpu"`
+	GoProcessMemory GoMemory   `json:"go_process_memory"`
+	HostSystemRAM   HostRAM    `json:"host_system_ram"`
 }
 
 type CPUMetrics struct {
-	LogicalCores    int     `json:"logical_cores"`
-	ActiveGoroutines int    `json:"active_goroutines"`
-	LoadAvg1Min     float64 `json:"load_avg_1m"`
-	LoadAvg5Min     float64 `json:"load_avg_5m"`
-	EstimatedUsage  string  `json:"estimated_cpu_usage_percent"`
+	LogicalCores     int     `json:"logical_cores"`
+	ActiveGoroutines int     `json:"active_goroutines"`
+	LoadAvg1Min      float64 `json:"load_avg_1m"`
+	LoadAvg5Min      float64 `json:"load_avg_5m"`
+	EstimatedUsage   string  `json:"estimated_cpu_usage_percent"`
 }
 
 type GoMemory struct {
